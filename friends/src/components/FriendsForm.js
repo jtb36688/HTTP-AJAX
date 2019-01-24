@@ -13,25 +13,24 @@ const FriendsForm = props => {
   return (
     <form onSubmit={props.addNewFriend}>
       <input
-      value={props.newname}
+      value={props.newfriend.name}
       type='text'
-      name='newname'
+      name='name'
       placeholder='Friend Name..'
-      onChange={props.handleName}
+      onChange={props.handleChanges}
       />
-      <select name="newage" value={props.newage} onChange={props.handleAge}>
+      <select name="age" value={props.newfriend.age} onChange={props.handleChanges}>
         <option value="">Friend Age..</option>
         {renderAge()}
       </select>
       <input
-      value={props.newemail}
+      value={props.newfriend.email}
       type='text'
-      name='newemail'
+      name='email'
       placeholder='Friend Email..'
-      onChange={props.handleEmail}
+      onChange={props.handleChanges}
       />
       <button type="submit">Add New Friend</button>
-      
     </form>
   );
 };

@@ -9,22 +9,63 @@ class App extends Component {
     friends: [],
     newname: "",
     newage: "",
-    newemail: ""
+    newemail: "",
+    datalength: ''
   };
 
-componentDidMount() {
-  axios
-  .get('http://localhost:5000/friends')
-  .then(res => {
-    this.setState({friends: res.data})
-   })
-  .catch(err => {
-    console.log(err)
-  });
-}
 
 
+  clearData = () => {
+    axios
+    .get("http://localhost:5000/friends")
+    .then(res => {
+      this.setState({ datalength: (res.data.length) });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+    this.deleteitem();
+  }
+  
+  deleteitem = () => {
+    axios.delete(`http://localhost:5000/friends/${this.state.datalength}`)
+    .then(res => {
+      this.setState({ friends: res.data });
+    })
+    .catch(err => console.log(err))
+    this.setState({ datalength: ''})
+  }
 
+  componentDidMount() {
+    axios
+      .get("http://localhost:5000/friends")
+      .then(res => {
+        this.setState({ friends: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  // componentDidUpdate() {
+  //   axios
+  //     .post("http://localhost:5000/friends", {
+  //       name: this.state.newname,
+  //       age: this.state.newage,
+  //       email: this.state.newemail
+  //     })
+  //     .then(res => {
+  //       console.log(res);
+  //       this.setState({
+  //         newname: "",
+  //         newage: "",
+  //         newemail: ""
+  //       });
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }
 
   handleChanges = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -40,11 +81,25 @@ componentDidMount() {
           age: this.state.newage,
           email: this.state.newemail
         }
-      ],
-      newname: "",
-      newage: "",
-      newemail: ""
+      ]
     });
+    axios
+      .post("http://localhost:5000/friends", {
+        name: this.state.newname,
+        age: this.state.newage,
+        email: this.state.newemail
+      })
+      .then(res => {
+        console.log(res);
+        this.setState({
+          newname: "",
+          newage: "",
+          newemail: ""
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -60,6 +115,7 @@ componentDidMount() {
           handleEmail={this.handleChanges}
           addNewFriend={this.addNewFriend}
         />
+        <button onClick={this.clearData}>Clear First Friend</button>
       </div>
     );
   }

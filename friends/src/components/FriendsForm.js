@@ -31,6 +31,7 @@ const FriendsForm = props => {
       onChange={props.handleEmail}
       />
       <button type="submit">Add New Friend</button>
+      
     </form>
   );
 };

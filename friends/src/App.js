@@ -3,6 +3,7 @@ import "./App.css";
 import axios from "axios";
 import FriendsList from "./components/FriendsList";
 import FriendsForm from "./components/FriendsForm";
+import { Route, NavLink } from "react-router-dom";
 
 const blankfield = {
   name: "",
@@ -14,9 +15,7 @@ class App extends Component {
   state = {
     friends: [],
     newfriend: blankfield,
-    newname: "",
-    newage: "",
-    newemail: ""
+    currentlyupdating: ''
   };
 
   componentDidMount() {
@@ -29,6 +28,22 @@ class App extends Component {
         console.log(err);
       });
   }
+
+  cancelUpdate = () => {
+    this.setState(currentState => {
+      return {
+        currentlyupdating: ''
+      }
+    });
+  };
+
+  toggleUpdate = id => {
+    this.setState({
+      newfriend: this.state.friends.find(friend => friend.id),
+      currentlyupdating: id
+    });
+    // this.props.history.push('/updating')
+  };
 
   handleChanges = e => {
     e.persist();
@@ -50,56 +65,77 @@ class App extends Component {
         this.setState({
           friends: res.data
         });
-        this.props.history.push("/friends");
+        // this.props.history.push("/");
       })
       .catch(err => {
         console.log(err);
       });
   };
 
-  deletefriend = (e, id) => {
-    e.preventDefault();
+  deleteFriend = id => {
     axios
       .delete(`http://localhost:5000/friends/${id}/`)
       .then(res => {
         this.setState({
           friends: res.data
         });
-        this.props.history.push("/friends");
+        // this.props.history.push("/");
       })
       .catch(err => console.log(err));
   };
 
-  updateFriend = () =>
+  updateFriend = (e, id) => {
+  e.preventDefault();
     axios
       .put(`http://localhost:5000/friends/${id}`, this.state.newfriend)
       .then(res => {
         this.setState({
           friends: res.data,
-          friend: clearedItem
+          friend: blankfield,
+          currentlyupdating: ''
         });
-        this.props.history.push("/friends");
+        // this.props.history.push("/");
       })
       .catch(err => {
         console.log(err);
       });
+    }
 
   render() {
     return (
       <div className="AppContainer">
-        <FriendsList
-          friendsarray={this.state.friends}
-          deleteFriend={this.deleteFriend}
+        <Route
+          exact
+          path="/"
+          render={props => (
+            <div>
+            <NavLink to="/AddNew">Add New Friend...</NavLink>
+            <FriendsList
+              {...props}
+              friendsarray={this.state.friends}
+              deleteFriend={this.deleteFriend}
+              newfriend={this.state.newfriend}
+              handleChanges={this.handleChanges}
+              updateFriend={this.updateFriend}
+              cancelUpdate={this.cancelUpdate}
+              toggleUpdate={this.toggleUpdate}
+              currentlyupdating={this.state.currentlyupdating}
+            />
+            </div>
+          )}
         />
         <Route
-          path="/newfriend/"
+          path="/AddNew/"
           render={props => (
+            <div>
+            <NavLink to="/">Return to Friends List</NavLink>
             <FriendsForm
               {...props}
               newfriend={this.state.newfriend}
               handleChanges={this.handleChanges}
               addNewFriend={this.addNewFriend}
             />
+              </div>
           )}
         />
       </div>

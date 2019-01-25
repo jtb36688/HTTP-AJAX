@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "reactstrap";
 
 const FriendsList = props => {
   const renderAge = () => {
@@ -18,7 +19,7 @@ const FriendsList = props => {
         if (props.currentlyupdating === id) {
           return (
             <li key={id}>
-              <form onSubmit={(e) => props.updateFriend(e, id)}>
+              <form onSubmit={e => props.updateFriend(e, id)}>
                 <input
                   value={props.newfriend.name}
                   type="text"
@@ -41,10 +42,12 @@ const FriendsList = props => {
                   placeholder="Friend Email.."
                   onChange={props.handleChanges}
                 />
-                <button type="submit">Update Friend</button>
-                <button onClick={() => props.cancelUpdate(id)}>
+                <Button color="primary" type="submit">
+                  Update Friend
+                </Button>
+                <Button color="warning" onClick={() => props.cancelUpdate(id)}>
                   Cancel Updating
-                </button>
+                </Button>
               </form>
             </li>
           );
@@ -56,12 +59,20 @@ const FriendsList = props => {
                 <li> Age: {age} </li>
                 <li> Email: {email} </li>
               </ul>{" "}
-              <button onClick={() => props.deleteFriend(id)}>
-                Delete Friend
-              </button>
-              <button onClick={() => props.toggleUpdate(id)}>
+              <Button
+                color="primary"
+                size="sm"
+                onClick={() => props.toggleUpdate(id)}
+              >
                 Update Friend
-              </button>
+              </Button>
+              <Button
+                color="warning"
+                size="sm"
+                onClick={() => props.deleteFriend(id)}
+              >
+                Delete Friend
+              </Button>
             </li>
           );
         }

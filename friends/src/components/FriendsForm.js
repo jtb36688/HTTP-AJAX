@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Button } from 'reactstrap'
 
 const FriendsForm = props => {
   const renderAge = () => {
@@ -30,7 +30,7 @@ const FriendsForm = props => {
       placeholder='Friend Email..'
       onChange={props.handleChanges}
       />
-      <button type="submit">Add New Friend</button>
+      <Button color='primary' type="submit">Add New Friend</Button>
     </form>
   );
 };

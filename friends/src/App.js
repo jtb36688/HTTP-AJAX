@@ -8,7 +8,7 @@ import { Route, NavLink } from "react-router-dom";
 const blankfield = {
   name: "",
   age: "",
-  email: ""
+  email: "",
 };
 
 class App extends Component {
@@ -42,7 +42,6 @@ class App extends Component {
       newfriend: this.state.friends.find(friend => friend.id),
       currentlyupdating: id
     });
-    // this.props.history.push('/updating')
   };
 
   handleChanges = e => {
@@ -65,7 +64,7 @@ class App extends Component {
         this.setState({
           friends: res.data
         });
-        // this.props.history.push("/");
+        this.props.history.push("/");
       })
       .catch(err => {
         console.log(err);
@@ -79,7 +78,6 @@ class App extends Component {
         this.setState({
           friends: res.data
         });
-        // this.props.history.push("/");
       })
       .catch(err => console.log(err));
   };
@@ -94,7 +92,6 @@ class App extends Component {
           friend: blankfield,
           currentlyupdating: ''
         });
-        // this.props.history.push("/");
       })
       .catch(err => {
         console.log(err);

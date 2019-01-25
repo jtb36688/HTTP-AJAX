@@ -32,6 +32,7 @@ class App extends Component {
   cancelUpdate = () => {
     this.setState(currentState => {
       return {
+        newfriend: blankfield,
         currentlyupdating: ''
       }
     });
@@ -39,7 +40,7 @@ class App extends Component {
 
   toggleUpdate = id => {
     this.setState({
-      newfriend: this.state.friends.find(friend => friend.id),
+      newfriend: this.state.friends.find(friend => friend.id === id),
       currentlyupdating: id
     });
   };
